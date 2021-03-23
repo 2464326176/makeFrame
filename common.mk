@@ -52,8 +52,9 @@ OPT ?=0
 CXXFLAGS+= $(WARN) \
 -O$(OPT) 
 
-CFLAGS+= $(WARN) \
--O$(OPT) 
+CFLAGS+= $(WARN)	\
+-O$(OPT) 			\
+-lpthread
 
 SHARED = -shared
 
@@ -111,7 +112,6 @@ make_clean:
 
 mk_main:mk_obj mk_bin 
 
-
 mk_libdynamic:mk_obj
 	@if [ -d $(DIR_DYNAMIC_DDL) ];\
 	then\
@@ -134,3 +134,17 @@ $(DIR_OBJ_MODULE)/%.o: %.c
 	@$(MKDIR) `dirname $@`
 	@$(ECHO_YELLOW)[$(CC)] -c $(CFLAGS) $< -o $@ $(ECHO_END)
 	$(CC) -c $(CFLAGS) $< -o $@
+
+
+# ------------------------------------------- make_current_folder
+src = $(wildcard *.c)
+targets = $(patsubst %.c, %, $(src))
+
+make_current_folder:$(targets)
+
+$(targets):%:%.c
+	$(CC) $< -o $@ $(CFLAGS)
+
+.PHONY:clean all
+clean:
+	-rm -rf $(targets) 

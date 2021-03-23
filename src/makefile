@@ -1,6 +1,7 @@
 DIR_ROOT:=..
 DIR_SUB_LIST:=\
-math
+math \
+sorts 
 
 
 FILE_LIST_C +=\
